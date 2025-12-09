@@ -119,25 +119,20 @@ impl PhoneBook {
         number: String,
         is_listed: bool,
     ) -> bool {
-        // 1. Name must be unique
         if self.entries.iter().any(|entry| entry.name == name) {
             return false;
         }
 
-        // 2. Validate number format manually: NNN-NNN-NNNN
-        // Total length must be 12: 3 digits, dash, 3 digits, dash, 4 digits
         if number.len() != 12 {
             return false;
         }
 
         let chars: Vec<char> = number.chars().collect();
 
-        // Check dashes
         if chars[3] != '-' || chars[7] != '-' {
             return false;
         }
 
-        // Check digits
         if !chars[..3].iter().all(|c| c.is_ascii_digit()) ||
            !chars[4..7].iter().all(|c| c.is_ascii_digit()) ||
            !chars[8..].iter().all(|c| c.is_ascii_digit())
@@ -145,7 +140,6 @@ impl PhoneBook {
             return false;
         }
 
-        // 3. Listed number must be unique
         if is_listed && self.entries.iter().any(|entry| entry.number == number && entry.is_listed) {
             return false;
         }
